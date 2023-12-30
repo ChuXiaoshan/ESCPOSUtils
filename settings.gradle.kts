@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ESCPOSUtils"
 include(":app")
+include(":comlibrary")

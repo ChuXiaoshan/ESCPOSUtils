@@ -64,5 +64,7 @@ dependencies {
     // qrcode
     implementation("com.github.bingoogolapple.BGAQRCode-Android:zxing:1.3.8")
 
+    implementation(project(":comlibrary"))
+
     implementation("com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.2.0")
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
+import com.cxsplay.comlibrary.Test
 import com.cxsplay.epcu.adapter.DeviceRvAdapter
 import com.cxsplay.epcu.bean.BtDeviceBean
 import com.cxsplay.epcu.bt.BluetoothChatService
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
         bind.btnPrintTest.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                bluetoothService.write("dddd\ndddd\ndddd\ndddd\n".toByteArray())
+                bluetoothService.write(Test.test())
             }
         }
     }
