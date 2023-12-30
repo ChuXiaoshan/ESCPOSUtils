@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
+import com.cxsplay.comlibrary.Com
 import com.cxsplay.comlibrary.Test
 import com.cxsplay.epcu.adapter.DeviceRvAdapter
 import com.cxsplay.epcu.bean.BtDeviceBean
@@ -70,16 +71,22 @@ class MainActivity : AppCompatActivity() {
         bind.rv.adapter = mAdapter
         mAdapter.itemClick { _, p ->
             val address = mAdapter.dataSet[p].address ?: return@itemClick
-            initDevice2(address)
+            initDevice(address)
         }
         bind.btnPrintTest.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                bluetoothService.write(Test.test())
+                bluetoothService.write(makeTestData())
             }
         }
     }
 
-    private fun initDevice2(address: String) {
+    private fun makeTestData(): ByteArray {
+        return (Com.init() +
+                Com.setFontSize() +
+                Test.test())
+    }
+
+    private fun initDevice(address: String) {
         val device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address)
         bluetoothService.connect(device)
     }
