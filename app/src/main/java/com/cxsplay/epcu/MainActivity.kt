@@ -29,9 +29,6 @@ class MainActivity : AppCompatActivity() {
     private val bluetoothService: BluetoothChatService by lazy {
         BluetoothChatService(object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
-
-                LogUtils.d("")
-
                 when (msg.what) {
                     // 连接状态
                     BluetoothChatService.MSG_STATE_CHANGE -> doMsgStateChange(msg.arg1)
@@ -48,38 +45,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun doMsgStateChange(state: Int) {
-        when (state) {
-            BluetoothChatService.STATE_NONE -> {
-                LogUtils.d("---STATE_NONE--->")
-            }
-
-            BluetoothChatService.STATE_LISTEN -> {
-                LogUtils.d("---STATE_LISTEN--->")
-            }
-
-            BluetoothChatService.STATE_CONNECTING -> {
-                LogUtils.d("---STATE_CONNECTING--->")
-            }
-
-            BluetoothChatService.STATE_CONNECTED -> {
-                LogUtils.d("---STATE_CONNECTED--->")
-            }
-        }
-    }
-
-    private fun doMsgRead(arg: Int) {
-        ToastUtils.showShort("---msg_read-->$arg")
-        LogUtils.d("---msg_read-->$arg")
-    }
-
-    private fun doMsgWrite(obj: Any) {
-        if (obj !is ByteArray) return
-        val content = obj.toString(Charsets.UTF_8)
-        ToastUtils.showShort("---msg_write-->$content")
-        LogUtils.d("---msg_write-->$content")
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityMainBinding.inflate(layoutInflater)
@@ -89,11 +54,6 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun initData() {
-
-//        LogUtils.d("---length--->${imageByteArray.size}")
-        Glide.with(this)
-            .load("https://th.wallhaven.cc/small/8o/8ok7vk.jpg")
-            .into(bind.ivImg);
 
         lifecycleScope.launch {
             BluetoothMatcher.deviceFlow.collect {
@@ -122,4 +82,26 @@ class MainActivity : AppCompatActivity() {
         val device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address)
         bluetoothService.connect(device)
     }
+
+    private fun doMsgStateChange(state: Int) {
+        when (state) {
+            BluetoothChatService.STATE_NONE -> LogUtils.d("---STATE_NONE--->")
+            BluetoothChatService.STATE_LISTEN -> LogUtils.d("---STATE_LISTEN--->")
+            BluetoothChatService.STATE_CONNECTING -> LogUtils.d("---STATE_CONNECTING--->")
+            BluetoothChatService.STATE_CONNECTED -> LogUtils.d("---STATE_CONNECTED--->")
+        }
+    }
+
+    private fun doMsgRead(arg: Int) {
+        ToastUtils.showShort("---msg_read-->$arg")
+        LogUtils.d("---msg_read-->$arg")
+    }
+
+    private fun doMsgWrite(obj: Any) {
+        if (obj !is ByteArray) return
+        val content = obj.toString(Charsets.UTF_8)
+        ToastUtils.showShort("---msg_write-->$content")
+        LogUtils.d("---msg_write-->$content")
+    }
+
 }
